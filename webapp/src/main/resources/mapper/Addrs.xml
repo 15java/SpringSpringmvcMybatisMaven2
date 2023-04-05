@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--数据库的映射文件-->
+<!--映射那个类就用那个  用接口和xml这里就映射接口类-->
+<mapper namespace="Maven.crud.bb.Addrs">
+
+
+    <resultMap id="a" type="Maven.crud.aa.Addr">
+        <id column="id" property="id"></id>
+        <result column="city" property="city"></result>
+
+
+        <collection property="user" javaType="Maven.crud.aa.User">
+            <id column="id" property="id"></id>
+            <result column="name" property="name"></result>
+            <result column="password" property="password"></result>
+            <result column="sex" property="sex"></result>
+            <result column="path" property="path"></result>
+            <result column="age" property="age"></result>
+            <result column="birth" property="birth"></result>
+            <result column="salary" property="salary"></result>
+            <result column="email" property="email"></result>
+            <result column="group" property="group"></result>
+        </collection>
+
+    </resultMap>
+
+
+    <!-- 查询-所有-->
+    <select id="getAddr" resultMap="a">
+        select *from `addr`;
+    </select>
+
+    <!-- 根据ID查询-->
+    <select id="getById" resultMap="a" parameterType="java.lang.Integer">
+        select * from `addr` where id = #{id}
+    </select>
+
+</mapper>

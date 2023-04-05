@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--数据库的映射文件-->
+<!--映射那个类就用那个  用接口和xml这里就映射接口类-->
+<mapper namespace="Maven.crud.bb.Users">
+
+    <resultMap id="us" type="Maven.crud.aa.User">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="password" property="password"></result>
+        <result column="sex" property="sex"></result>
+        <result column="path" property="path"></result>
+        <result column="age" property="age"></result>
+        <result column="birth" property="birth"></result>
+        <result column="salary" property="salary"></result>
+        <result column="email" property="email"></result>
+        <result column="group" property="group"></result>
+
+        <association property="addr" javaType="Maven.crud.aa.Addr">
+            <id property="id" column="id"></id>
+            <result property="city" column="city"></result>
+        </association>
+    </resultMap>
+
+    <!-- 查询-所有-->
+    <select id="getAll" resultMap="us" parameterType="Maven.crud.aa.Page">
+        select * from `user` as u,`addr` as a
+        <where>
+            u.addr_id = a.id
+        </where>
+        limit #{p},#{pageSize};
+    </select>
+
+    <!-- 新增-->
+    <insert id="addUser" parameterType="Maven.crud.aa.User">
+        insert into
+        `user`(name,password,sex,path,age,birth,salary,email,`group`,addr_id)values(#{name},#{password},#{sex},#{path},#{age},#{birth},#{salary},#{email},#{group},#{addr.id});
+    </insert>
+
+    <!--查询总数据-->
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*) from `user`
+    </select>
+
+    <!--删除-->
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from user where id=#{id}
+    </delete>
+
+    <!-- 根据ID查询-->
+    <select id="getUserById" resultMap="us" parameterType="java.lang.Integer">
+        select *from user where id=#{id};
+    </select>
+
+    <!-- 修改-->
+    <update id="update" parameterType="Maven.crud.aa.User">
+        update user set
+        name=#{name},password=#{password},sex=#{sex},path=#{path},age=#{age},birth=#{birth},salary=#{salary},email=#{email},`group`=#{group}  where id=#{id};
+    </update>
+</mapper>
